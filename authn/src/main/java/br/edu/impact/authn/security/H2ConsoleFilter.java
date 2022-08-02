@@ -8,8 +8,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class OAuthFilter {
-
+public class H2ConsoleFilter {
+    
     /**
      * Configure http security chain to support OAuth protocol on the app
      * @param http
@@ -17,14 +17,16 @@ public class OAuthFilter {
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain h2FilterChain(HttpSecurity http) throws Exception {
         http
+            .antMatcher("/h2-console/**")
+            .headers().frameOptions().disable()
+            .and()
             .authorizeHttpRequests((authorize -> {
                 try {
                     authorize
-                        .anyRequest()
-                            .authenticated()
-                            .and().oauth2ResourceServer().jwt();
+                        .antMatchers("/h2-console/**")
+                            .permitAll();
                 } catch (Exception e) {
                     System.out.println("erro during authN process...");
                     e.printStackTrace();
@@ -35,5 +37,5 @@ public class OAuthFilter {
 
         return http.build();
     }
-    
+
 }

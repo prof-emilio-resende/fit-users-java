@@ -2,6 +2,7 @@ package br.edu.impact.authn.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,9 @@ public class Role {
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     private List<RoleUser> users;
-
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<PermissionRole> permissions;
 
     public Long getId() {
         return id;
@@ -42,5 +45,10 @@ public class Role {
     public void setUsers(List<RoleUser> users) {
         this.users = users;
     }
-
+    public List<PermissionRole> getPermissions() {
+        return permissions;
+    }
+    public void setPermissions(List<PermissionRole> permissions) {
+        this.permissions = permissions;
+    }
 }

@@ -1,30 +1,28 @@
 package br.edu.impact.authn.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
-@Entity(name = "RolesUsers")
-public class RoleUser {
+@Entity(name = "PermissionsRoles")
+public class PermissionRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Permission permission;
     @ManyToOne
     private Role role;
 
-    public RoleUser() {
+    public PermissionRole() {
         super();
-    }  
-    
-    public RoleUser(User user, Role role) {
-        this.user = user;
+    }
+   
+    public PermissionRole(Permission permission, Role role) {
+        this.permission = permission;
         this.role = role;
     }
 
@@ -34,11 +32,11 @@ public class RoleUser {
     public void setId(Long id) {
         this.id = id;
     }
-    public User getUser() {
-        return user;
+    public Permission getPermission() {
+        return permission;
     }
-    public void setUser(User user) {
-        this.user = user;
+    public void setPermission(Permission permission) {
+        this.permission = permission;
     }
     public Role getRole() {
         return role;

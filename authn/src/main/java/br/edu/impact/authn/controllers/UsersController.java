@@ -1,6 +1,7 @@
 package br.edu.impact.authn.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,17 +31,23 @@ public class UsersController {
         return user;
     }
 
+    @DeleteMapping("/{userId}")
+    public User destroy(@PathVariable Long userId) {
+        var user = repository.findById(userId).get();
+        repository.delete(user);
+
+        return user;
+    }
+
     @PostMapping("/{userId}/{roleId}")
     public User associateRole(@PathVariable Long userId, @PathVariable Long roleId) {
         var user = repository.findById(userId).get();
         var role = rolesRepository.findById(roleId).get();
         
-        var userRole = new RoleUser();
-        userRole.setUser(user);
-        userRole.setRole(role);
+        var userRole = new RoleUser(user, role);
+
         user.getRoles().add(userRole);
-        role.getUsers().add(userRole);
-        rolesUsersRepository.save(userRole);
+        repository.save(user);
 
         return user;
     }
